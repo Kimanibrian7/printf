@@ -8,7 +8,7 @@
 
 int _printf(const char *format, ...)
 {
-	int i;
+	int i, count;
 	va_list print;
 
 	va_start(print, format);
@@ -32,10 +32,11 @@ int _printf(const char *format, ...)
 			}
 			handle(format[i], print);
 		}
+	count++;
 	}
 
 	va_end(print);
-	return (0);
+	return (count);
 }
 
 /**
