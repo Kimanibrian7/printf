@@ -48,7 +48,7 @@ int _printf(const char *format, ...)
 void handle(char s, va_list args)
 {
 	int i, num;
-	char c, *str
+	char c, *str;
 
 	if (s == 'c')
 	{
