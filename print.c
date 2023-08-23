@@ -8,11 +8,12 @@
 
 int _printf(const char *format, ...)
 {
-	int i;
+	int i, count;
 	va_list print;
 
 	va_start(print, format);
 
+	count = 0;
 	if (format == NULL)
 	{
 		va_end(print);
@@ -21,7 +22,10 @@ int _printf(const char *format, ...)
 	for (i = 0; format[i] != '\0'; i++)
 	{
 		if (format[i] != '%')
+		{
 			_putchar(format[i]);
+			count++;
+		}
 		else
 		{
 			i++;
@@ -30,12 +34,12 @@ int _printf(const char *format, ...)
 				va_end(print);
 				return (-1);
 			}
-			handle(format[i], print);
+			count += handle(format[i], print);
 		}
 	}
 
 	va_end(print);
-	return (0);
+	return (count);
 }
 
 /**
@@ -45,26 +49,34 @@ int _printf(const char *format, ...)
  * Return: void
  */
 
-void handle(char s, va_list args)
+int handle(char s, va_list args)
 {
-	int i, num;
+	int i, num, printed;
 	char c, *str;
 
+	printed = 0;
 	if (s == 'c')
 	{
 		c = va_arg(args, int);
 		_putchar(c);
+		printed++;
 	}
 	else if (s == 's')
 	{
 		str = va_arg(args, char *);
 		if (str == NULL)
-			return;
+			return (printed);
 		for (i = 0; str[i] != '\0'; i++)
+		{
 			_putchar(str[i]);
+			printed++;
+		}
 	}
 	else if (s == '%')
+	{
 		_putchar('%');
+		printed++;
+	}
 	else if (s == 'd' || s == 'i')
 	{
 		num = va_arg(args, int);
@@ -72,11 +84,16 @@ void handle(char s, va_list args)
 		{
 			_putchar('-');
 			num = -num;
+			printed++;
 		}
-		print_integer(num);
+		printed += print_integer(num);
 	}
 	else
+	{
 		_putchar(s);
+		printed++;
+	}
+	return (printed);
 }
 
 /**
@@ -85,17 +102,23 @@ void handle(char s, va_list args)
  * Return: void
  */
 
-void print_integer(int num)
+int print_integer(int num)
 {
+	int printed;
 
+	printed = 0;
 	if (num == 0)
 	{
 		_putchar('0');
-		return;
+		printed++;
+		return (printed);
 	}
 	if (num / 10)
 	{
-		print_integer(num / 10);
+		printed += print_integer(num / 10);
 	}
 	_putchar(num % 10 + '0');
+	printed++;
+
+	return (printed);
 }
