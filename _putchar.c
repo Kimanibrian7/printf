@@ -3,7 +3,7 @@
 /**
  * _putchar - prints a character to stardard output
  * @c: character to be printed
- * Return: return character
+ * Return: return character printed
  */
 
 int _putchar(char c)
